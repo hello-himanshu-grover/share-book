@@ -11,23 +11,23 @@ interface User {
   phone: string
 }
 
-// Get all users (pet guardians)
+// Get all users (book guardians)
 const getAllUsers = () => {
   return users;
 };
 
-// Get a user (pet guardian) by ID
+// Get a user (book guardian) by ID
 const getUserById = (id: string) => {
   return users.find(user => user.id === id);
 };
 
-// Add a new user (pet guardian)
+// Add a new user (book guardian)
 const addUser = (newUser: User) => {
   users.push(newUser);
   return newUser;
 };
 
-// Update a user (pet guardian) by ID
+// Update a user (book guardian) by ID
 const updateUser = (id: string, updatedUser: User) => {
   const userIndex = users.findIndex((user: User) => user.id === id);
   if (userIndex !== -1) {
@@ -37,7 +37,7 @@ const updateUser = (id: string, updatedUser: User) => {
   return null;
 };
 
-// Delete a user (pet guardian) by ID
+// Delete a user (book guardian) by ID
 const deleteUser = (id: string) => {
   const userIndex = users.findIndex((user: User) => user.id === id);
   if (userIndex !== -1) {

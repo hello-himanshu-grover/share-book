@@ -8,13 +8,13 @@ router.post('api/register', (req: Request, res: Response) => {
   
 })
 
-// GET all users (pet guardians)
+// GET all users (book guardians)
 router.get('/api/users', (req: Request, res: Response) => {
   const users = userService.getAllUsers();
   res.json(users);
 });
 
-// GET a specific user (pet guardian) by ID
+// GET a specific user (book guardian) by ID
 router.get('/api/users/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const user = userService.getUserById(id);
@@ -24,14 +24,14 @@ router.get('/api/users/:id', (req: Request, res: Response) => {
   res.json(user);
 });
 
-// POST a new user (pet guardian)
+// POST a new user (book guardian)
 router.post('/api/users', (req: Request, res: Response) => {
   const newUser = req.body;
   const createdUser = userService.addUser(newUser);
   res.status(201).json(createdUser);
 });
 
-// PUT update an existing user (pet guardian) by ID
+// PUT update an existing user (book guardian) by ID
 router.put('/api/users/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const updatedUser = req.body;
@@ -42,7 +42,7 @@ router.put('/api/users/:id', (req: Request, res: Response) => {
   res.json(user);
 });
 
-// DELETE a user (pet guardian) by ID
+// DELETE a user (book guardian) by ID
 router.delete('/api/users/:id', (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const deletedUser = userService.deleteUser(id);

@@ -7,27 +7,27 @@ interface User {
   phone: string
 }
 
-// Get all users (pet guardians)
+// Get all users (book guardians)
 const getAllUsers = () => {
   return userDao.getAllUsers();
 };
 
-// Get a user (pet guardian) by ID
+// Get a user (book guardian) by ID
 const getUserById = (id: string) => {
   return userDao.getUserById(id);
 };
 
-// Add a new user (pet guardian)
+// Add a new user (book guardian)
 const addUser = (newUser: User) => {
   return userDao.addUser(newUser);
 };
 
-// Update a user (pet guardian) by ID
+// Update a user (book guardian) by ID
 const updateUser = (id: string, updatedUser: User) => {
   return userDao.updateUser(id, updatedUser);
 };
 
-// Delete a user (pet guardian) by ID
+// Delete a user (book guardian) by ID
 const deleteUser = (id: string) => {
   return userDao.deleteUser(id);
 };

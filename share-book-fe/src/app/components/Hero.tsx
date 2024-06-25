@@ -134,9 +134,9 @@ export default function Hero() {
         </Stack>
         <Paper variant="outlined" sx={{ mt: 8, p: 2 }}>
           <Grid container spacing={2}>
-            {data.map(pet => (
+            {data.map(book => (
               <Grid item lg={3} md={4} sm={2} xs={1}>
-                <ListingCard {...pet} />
+                <ListingCard {...book} />
               </Grid>
             ))}
           </Grid>
