@@ -1,5 +1,5 @@
-const mongoClient = require('../mongoClient');
-const dbClient = mongoClient.getClient();
+const { mongoDBClient } = require('../mongoClient');
+const dbClient = mongoDBClient.getClient();
 
 interface Pet {
   id: string,

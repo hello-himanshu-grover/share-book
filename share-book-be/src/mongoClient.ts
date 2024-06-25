@@ -1,14 +1,16 @@
-const { MongoClient } = require("mongodb");
+import { MongoClient } from 'mongodb';
 
 // Replace the uri string with your connection string.
-const uri = process.env.DB_STRING;
+const uri: string = process.env.DB_STRING as string;
 
 class MongoDBClient {
+  private client: MongoClient;
+
   constructor() {
     this.client = new MongoClient(uri);
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     try {
       await this.client.connect();
       console.log('Connected to MongoDB');
@@ -17,11 +19,11 @@ class MongoDBClient {
     }
   }
 
-  getClient() {
+  getClient(): MongoClient {
     return this.client;
   }
 
-  async close() {
+  async close(): Promise<void> {
     try {
       await this.client.close();
       console.log('Disconnected from MongoDB');
@@ -31,5 +33,6 @@ class MongoDBClient {
   }
 }
 
-// Export singleton instance of MongoDBClient
-module.exports = new MongoDBClient();
+const mongoDBClient = new MongoDBClient();
+
+export { mongoDBClient };
