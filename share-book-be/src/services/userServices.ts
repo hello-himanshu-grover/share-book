@@ -1,41 +1,52 @@
 const userDao = require('../dao/userDao');
+const validator = require('validator');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-interface User {
-  id: string,
-  name: string,
+const saltRounds = 10;
+
+interface NewUser {
+  firstName: string,
+  lastName: string,
   email: string,
-  phone: string
+  password: string
+}
+const signUp = async (newUser: NewUser) => {
+  try {
+    if (!validator.isEmail(newUser.email)) {
+      throw { message: "Email is invalid" };
+    }
+    newUser.password = await bcrypt.hash(newUser.password, saltRounds);
+    return userDao.createUser(newUser);
+  } catch (error: any) {
+    console.error('Error during sign-in:', error);
+    return { ...error };
+  }
+};
+
+interface LoginData {
+  email: string,
+  password: string
+}
+const signIn = async (loginData: LoginData) => {
+  try {
+    const user = await userDao.findUser({ email: loginData.email });
+    const isValidPassword = user && bcrypt.compareSync(loginData.password, user.password);
+
+    if (isValidPassword) {
+      const authToken = jwt.sign({ userId: user.email }, process.env.JWT_SECRET_KEY as string, { expiresIn: '1h' });
+      return { authToken };
+    }
+    return { authToken: null, message: "Invalid email or password" };
+
+  } catch (error: any) {
+    console.error('Error during sign-in:', error);
+    return { authToken: null, message: "An error occurred during sign-in" };
+  }
 }
 
-// Get all users (book guardians)
-const getAllUsers = () => {
-  return userDao.getAllUsers();
-};
-
-// Get a user (book guardian) by ID
-const getUserById = (id: string) => {
-  return userDao.getUserById(id);
-};
-
-// Add a new user (book guardian)
-const addUser = (newUser: User) => {
-  return userDao.addUser(newUser);
-};
-
-// Update a user (book guardian) by ID
-const updateUser = (id: string, updatedUser: User) => {
-  return userDao.updateUser(id, updatedUser);
-};
-
-// Delete a user (book guardian) by ID
-const deleteUser = (id: string) => {
-  return userDao.deleteUser(id);
-};
 
 export {
-  getAllUsers,
-  getUserById,
-  addUser,
-  updateUser,
-  deleteUser
+  signUp,
+  signIn
 };

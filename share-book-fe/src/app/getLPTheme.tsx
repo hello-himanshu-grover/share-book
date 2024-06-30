@@ -1,4 +1,4 @@
-import type {} from '@mui/material/themeCssVarsAugmentation';
+import type { } from '@mui/material/themeCssVarsAugmentation';
 import { ThemeOptions, alpha } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import { PaletteMode } from '@mui/material';
@@ -17,7 +17,7 @@ declare module '@mui/material/styles/createPalette' {
     900: string;
   }
 
-  interface PaletteColor extends ColorRange {}
+  interface PaletteColor extends ColorRange { }
 }
 
 export const brand = {
@@ -202,6 +202,16 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
   return {
     ...getDesignTokens(mode),
     components: {
+      MuiAppBar: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            background: 'none',
+            boxShadow: '0 2px 15px rgba(0,0,0,.045), 0 1px 0px rgba(0,0,0,.025)',
+            color: 'inherit',
+            borderBottom: `1px solid ${alpha(gray[200], 0.8)}`
+          })
+        }
+      },
       MuiAccordion: {
         defaultProps: {
           elevation: 0,
@@ -315,17 +325,17 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
             }),
             ...(ownerState.variant === 'contained' &&
               ownerState.color === 'primary' && {
-                color: brand[50],
-                background: brand[500],
-                backgroundImage: `linear-gradient(to bottom, ${brand[400]}, ${brand[600]})`,
-                boxShadow: `inset 0 1px ${alpha(brand[300], 0.4)}`,
-                outline: `1px solid ${brand[700]}`,
-                '&:hover': {
-                  background: brand[400],
-                  backgroundImage: 'none',
-                  boxShadow: `0 0 0 1px  ${alpha(brand[300], 0.5)}`,
-                },
-              }),
+              color: brand[50],
+              background: brand[500],
+              backgroundImage: `linear-gradient(to bottom, ${brand[400]}, ${brand[600]})`,
+              boxShadow: `inset 0 1px ${alpha(brand[300], 0.4)}`,
+              outline: `1px solid ${brand[700]}`,
+              '&:hover': {
+                background: brand[400],
+                backgroundImage: 'none',
+                boxShadow: `0 0 0 1px  ${alpha(brand[300], 0.5)}`,
+              },
+            }),
             ...(ownerState.variant === 'outlined' && {
               backgroundColor: alpha(brand[300], 0.1),
               borderColor: brand[300],
@@ -579,7 +589,7 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
             },
             '& .MuiOutlinedInput-root': {
               boxSizing: 'border-box',
-              minWidth: 280,
+              // minWidth: 280,
               minHeight: 40,
               height: '100%',
               borderRadius: '10px',
@@ -603,7 +613,7 @@ export default function getLPTheme(mode: PaletteMode): ThemeOptions {
             ...(theme.palette.mode === 'dark' && {
               '& .MuiOutlinedInput-root': {
                 boxSizing: 'border-box',
-                minWidth: 280,
+                // minWidth: 280,
                 minHeight: 40,
                 height: '100%',
                 borderRadius: '10px',

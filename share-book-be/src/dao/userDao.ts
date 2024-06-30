@@ -1,56 +1,36 @@
-// Sample data (you would typically interact with a database)
-let users = [
-  { id: "1", name: 'Alice', email: 'alice@example.com', phone: '123-456-7890' },
-  { id: "2", name: 'Bob', email: 'bob@example.com', phone: '987-654-3210' }
-];
+const { mongoDBClient } = require('../mongoClient');
+const usersCollection = mongoDBClient.getCollection('users');
 
 interface User {
-  id: string,
-  name: string,
+  firstName: string,
+  lastName: string,
   email: string,
-  phone: string
+  password: string
 }
-
-// Get all users (book guardians)
-const getAllUsers = () => {
-  return users;
-};
-
-// Get a user (book guardian) by ID
-const getUserById = (id: string) => {
-  return users.find(user => user.id === id);
-};
-
-// Add a new user (book guardian)
-const addUser = (newUser: User) => {
-  users.push(newUser);
-  return newUser;
-};
-
-// Update a user (book guardian) by ID
-const updateUser = (id: string, updatedUser: User) => {
-  const userIndex = users.findIndex((user: User) => user.id === id);
-  if (userIndex !== -1) {
-    users[userIndex] = { ...users[userIndex], ...updatedUser };
-    return users[userIndex];
+const createUser = async (newUser: User) => {
+  try {
+    const res = await usersCollection.insertOne(newUser);
+    return res;
+  } catch (error: any) {
+    if (error?.code === 11000) {
+      throw { message: "User Already Exists" }
+    } else {
+      throw error;
+    }
   }
-  return null;
 };
 
-// Delete a user (book guardian) by ID
-const deleteUser = (id: string) => {
-  const userIndex = users.findIndex((user: User) => user.id === id);
-  if (userIndex !== -1) {
-    const deletedUser = users.splice(userIndex, 1)[0];
-    return deletedUser;
-  }
-  return null;
+interface FindUserQuery {
+  firstName?: string,
+  lastName?: string,
+  email?: string,
+  password?: string
+}
+const findUser = async (query: FindUserQuery) => {
+  return query ? usersCollection.findOne(query) : null;
 };
 
 export {
-  getAllUsers,
-  getUserById,
-  addUser,
-  updateUser,
-  deleteUser
+  createUser,
+  findUser
 };

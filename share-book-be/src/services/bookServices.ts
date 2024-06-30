@@ -1,39 +1,23 @@
 const bookDao = require('../dao/bookDao');
 
-interface Book {
-  name: string,
-  age: number
+interface NewBook {
+  title: string, 
+  author: string, 
+  isbn: string, 
+  description: string
+}
+const addBook = (newBook: NewBook) => {
+  return bookDao.addBook(newBook);
 }
 
-// Get all book listings
-const getAllBooks = () => {
-  return bookDao.getAllBooks();
-};
-
-// Get a book listing by ID
-const getBookById = (id: string) => {
-  return bookDao.getBookById(id);
-};
-
-// Add a new book listing
-const addBook = (newBook: Book) => {
-  return bookDao.addBook(newBook);
-};
-
-// Update a book listing by ID
-const updateBook = (id: string, updatedBook: Book) => {
-  return bookDao.updateBook(id, updatedBook);
-};
-
-// Delete a book listing by ID
-const deleteBook = (id: string) => {
-  return bookDao.deleteBook(id);
-};
+interface SearchBookParams {
+  author?: string,
+}
+const getBooks = (searchedBookParams: SearchBookParams) => {
+  return bookDao.getBooks(searchedBookParams);
+}
 
 export {
-  getAllBooks,
-  getBookById,
   addBook,
-  updateBook,
-  deleteBook
+  getBooks
 };

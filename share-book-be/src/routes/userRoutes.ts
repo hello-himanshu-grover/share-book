@@ -1,55 +1,32 @@
 import { Router, Request, Response } from 'express';
+import { validateUser } from '../middlewares/validateUser';
 const userService = require('../services/userServices');
 
 const router = Router();
 
-router.post('api/register', (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  
+router.post('/signup', async (req: Request, res: Response) => {
+  try {
+    const { firstName, lastName, email, password } = req.body;
+    await userService.signUp({ firstName, lastName, email, password });
+    res.status(200).send({ message: 'User Created', code: 'USER_CREATED' });
+  } catch (error: any) {
+    res.status(500).send({ message: error?.message, stack: error?.stack });
+  }
 })
 
-// GET all users (book guardians)
-router.get('/api/users', (req: Request, res: Response) => {
-  const users = userService.getAllUsers();
-  res.json(users);
-});
-
-// GET a specific user (book guardian) by ID
-router.get('/api/users/:id', (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
-  const user = userService.getUserById(id);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
+router.post('/signin', async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const { authToken, message } = await userService.signIn({ email, password });
+    if (authToken) {
+      res.status(200).send({ data: { authToken }, code: 'LOGIN_SUCCESS' })
+    } else {
+      throw { message }
+    }
+  } catch (error: any) {
+    res.status(500).send({ message: error?.message, stack: error?.stack });
   }
-  res.json(user);
-});
+})
 
-// POST a new user (book guardian)
-router.post('/api/users', (req: Request, res: Response) => {
-  const newUser = req.body;
-  const createdUser = userService.addUser(newUser);
-  res.status(201).json(createdUser);
-});
-
-// PUT update an existing user (book guardian) by ID
-router.put('/api/users/:id', (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
-  const updatedUser = req.body;
-  const user = userService.updateUser(id, updatedUser);
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  res.json(user);
-});
-
-// DELETE a user (book guardian) by ID
-router.delete('/api/users/:id', (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
-  const deletedUser = userService.deleteUser(id);
-  if (!deletedUser) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  res.json({ message: 'User deleted', deletedUser });
-});
 
 export { router as userRoutes };

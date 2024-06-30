@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Collection, Document } from 'mongodb';
 
 // Replace the uri string with your connection string.
 const uri: string = process.env.DB_STRING as string;
@@ -19,8 +19,9 @@ class MongoDBClient {
     }
   }
 
-  getClient(): MongoClient {
-    return this.client;
+  getCollection(collectionName: string): Collection<Document> {
+    const db = this.client.db('share-book');
+    return db.collection(collectionName);
   }
 
   async close(): Promise<void> {
